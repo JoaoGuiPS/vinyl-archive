@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 60" width="300" height="60">
+  <circle cx="30" cy="30" r="22" fill="#1A1817"/>
+  <circle cx="30" cy="30" r="8" fill="#C5A059"/>
+  <circle cx="30" cy="30" r="2" fill="#FDFBF7"/>
+  <text x="65" y="38" font-family="'Playfair Display', Georgia, serif" font-size="24" font-weight="bold" fill="#1A1817" letter-spacing="1">VINYL ARCHIVE</text>
+</svg>

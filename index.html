@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vinyl Archive — Enciclopédia de Discos de Vinil</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="container header-container">
+            <a href="index.html" class="brand-logo">
+                <img src="assets/images/logo.svg" alt="Vinyl Archive" width="180" height="40">
+            </a>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html" class="active">Início</a></li>
+                    <li><a href="catalogo.html">Catálogo</a></li>
+                    <li><a href="artistas.html">Artistas</a></li>
+                    <li><a href="admin.html">Administração</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero-section">
+            <div class="container hero-content">
+                <span class="hero-subtitle">Enciclopédia Digital Musical</span>
+                <h1 class="hero-title">Cada disco conta uma história.</h1>
+                <p class="hero-description">
+                    Preservando a memória da música gravada em sulcos. Explore álbuns históricos, acervos de artistas,
+                    contextos de gravação e alinhamento de faixas com estética inspirada na era de ouro do vinil.
+                </p>
+                
+                <form id="hero-search-form" class="hero-search" action="catalogo.html" method="GET">
+                    <input type="text" name="busca" placeholder="Pesquisar por álbum, artista ou gênero..." aria-label="Pesquisar catálogo">
+                    <button type="submit" class="btn btn-primary">Buscar</button>
+                </form>
+            </div>
+        </section>
+
+        <section class="featured-section container">
+            <div class="section-header">
+                <h2>Álbuns em Destaque</h2>
+                <a href="catalogo.html" class="link-more">Ver acervo completo &rarr;</a>
+            </div>
+            <div id="destaques-grid" class="album-grid">
+                <div class="loading-state"><p>Carregando destaques do acervo...</p></div>
+            </div>
+        </section>
+
+        <section class="genres-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Explorar por Gênero</h2>
+                </div>
+                <div id="generos-list" class="genres-chips">
+                    <div class="loading-state"><p>Carregando gêneros...</p></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="recent-section container">
+            <div class="section-header">
+                <h2>Adicionados Recentemente</h2>
+            </div>
+            <div id="recentes-grid" class="album-grid">
+                <div class="loading-state"><p>Carregando novidades...</p></div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-content">
+            <div class="footer-brand">
+                <img src="assets/images/logo.svg" alt="Vinyl Archive" width="140" class="footer-logo">
+                <p>Preservação e documentação da história fonográfica em vinil.</p>
+            </div>
+            <div class="footer-links">
+                <p>Vinyl Archive &copy; 2026 — Projeto Acadêmico sem fins comerciais.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const albuns = await API.getAlbuns();
+                const destaquesContainer = document.getElementById('destaques-grid');
+                const recentesContainer = document.getElementById('recentes-grid');
+
+                if (albuns.length === 0) {
+                    destaquesContainer.innerHTML = '<div class="empty-state"><p>Nenhum álbum cadastrado no acervo ainda.</p></div>';
+                    recentesContainer.innerHTML = '<div class="empty-state"><p>Nenhum álbum recente.</p></div>';
+                } else {
+                    destaquesContainer.innerHTML = albuns.slice(0, 4).map(album => renderAlbumCard(album)).join('');
+                    recentesContainer.innerHTML = albuns.slice(0, 4).map(album => renderAlbumCard(album)).join('');
+                }
+
+                const generos = await API.getGeneros();
+                const generosContainer = document.getElementById('generos-list');
+                if (generos.length === 0) {
+                    generosContainer.innerHTML = '<p>Nenhum gênero cadastrado.</p>';
+                } else {
+                    generosContainer.innerHTML = generos.map(g => 
+                        `<a href="catalogo.html?genero_id=${g.id}" class="chip-item">${escapeHtml(g.nome)}</a>`
+                    ).join('');
+                }
+            } catch (error) {
+                console.error(error);
+                showToast('Erro ao carregar os dados da página inicial.', 'error');
+            }
+        });
+    </script>
+</body>
+</html>

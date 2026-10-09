@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Álbuns — Vinyl Archive</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="container header-container">
+            <a href="index.html" class="brand-logo">
+                <img src="assets/images/logo.svg" alt="Vinyl Archive" width="180" height="40">
+            </a>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="catalogo.html" class="active">Catálogo</a></li>
+                    <li><a href="artistas.html">Artistas</a></li>
+                    <li><a href="admin.html">Administração</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container page-content">
+        <header class="page-header">
+            <h1 class="page-title">Acervo de Álbuns</h1>
+            <p class="page-subtitle">Navegue, filtre e explore os registros de vinil do nosso arquivo.</p>
+        </header>
+
+        <section class="filter-bar">
+            <form id="filter-form" class="filter-grid">
+                <div class="form-group">
+                    <label for="search-input">Pesquisar</label>
+                    <input type="text" id="search-input" name="busca" placeholder="Título do álbum ou artista...">
+                </div>
+
+                <div class="form-group">
+                    <label for="genero-select">Gênero</label>
+                    <select id="genero-select" name="genero_id">
+                        <option value="">Todos os Gêneros</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="order-select">Ordenar por</label>
+                    <select id="order-select">
+                        <option value="recentes">Mais Recentes Adicionados</option>
+                        <option value="ano_desc">Ano de Lançamento (Novo &rarr; Antigo)</option>
+                        <option value="ano_asc">Ano de Lançamento (Antigo &rarr; Novo)</option>
+                        <option value="titulo_asc">Título (A &rarr; Z)</option>
+                    </select>
+                </div>
+
+                <div class="form-group filter-actions">
+                    <button type="submit" class="btn btn-primary">Filtrar</button>
+                    <button type="button" id="btn-reset-filters" class="btn btn-secondary">Limpar</button>
+                </div>
+            </form>
+        </section>
+
+        <section>
+            <div id="catalogo-grid" class="album-grid">
+                <div class="loading-state"><p>Carregando catálogo...</p></div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-content">
+            <div class="footer-brand">
+                <img src="assets/images/logo.svg" alt="Vinyl Archive" width="140" class="footer-logo">
+                <p>Preservação e documentação da história fonográfica em vinil.</p>
+            </div>
+            <div class="footer-links">
+                <p>Vinyl Archive &copy; 2026 — Projeto Acadêmico sem fins comerciais.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/catalogo.js"></script>
+</body>
+</html>

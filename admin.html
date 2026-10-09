@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Administração — Vinyl Archive</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="container header-container">
+            <a href="index.html" class="brand-logo">
+                <img src="assets/images/logo.svg" alt="Vinyl Archive" width="180" height="40">
+            </a>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="catalogo.html">Catálogo</a></li>
+                    <li><a href="artistas.html">Artistas</a></li>
+                    <li><a href="admin.html" class="active">Administração</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container page-content">
+        <header class="page-header">
+            <h1 class="page-title">Painel de Gestão do Acervo</h1>
+            <p class="page-subtitle">Cadastre, edite e gerencie álbuns, artistas e faixas do Vinyl Archive.</p>
+        </header>
+
+        <div class="admin-tabs">
+            <button class="tab-btn active" data-tab="tab-albuns">Gestão de Álbuns</button>
+            <button class="tab-btn" data-tab="tab-artistas">Gestão de Artistas</button>
+            <button class="tab-btn" data-tab="tab-musicas">Gestão de Músicas</button>
+        </div>
+
+        <!-- ABA 1: ÁLBUNS -->
+        <section id="tab-albuns" class="tab-content active">
+            <div class="admin-grid">
+                <div class="admin-form-container">
+                    <h2 id="album-form-title">Cadastrar Novo Álbum</h2>
+                    <form id="album-form" class="admin-form">
+                        <input type="hidden" id="album-id" name="id">
+                        
+                        <div class="form-group">
+                            <label for="album-titulo">Título do Álbum *</label>
+                            <input type="text" id="album-titulo" name="titulo" required>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="album-artista">Artista *</label>
+                                <select id="album-artista" name="artista_id" required>
+                                    <option value="">Selecione um artista...</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="album-genero">Gênero</label>
+                                <select id="album-genero" name="genero_id">
+                                    <option value="">Selecione um gênero...</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="album-ano">Ano de Lançamento *</label>
+                                <input type="number" id="album-ano" name="ano_lancamento" min="1900" max="2099" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="album-gravadora">Gravadora</label>
+                                <input type="text" id="album-gravadora" name="gravadora">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="album-descricao">Descrição / Resumo</label>
+                            <textarea id="album-descricao" name="descricao" rows="3"></textarea>
+                        </div>
+
+                        <!-- CAPA: SELEÇÃO DE TIPO -->
+                        <div class="form-group">
+                            <label>Origem da Capa do Disco</label>
+                            <div class="radio-group">
+                                <label><input type="radio" name="capa_tipo" value="url" checked> URL Externa</label>
+                                <label><input type="radio" name="capa_tipo" value="file"> Upload de Arquivo Local</label>
+                            </div>
+                        </div>
+
+                        <div id="capa-url-group" class="form-group">
+                            <label for="album-capa-url">URL da Imagem da Capa</label>
+                            <input type="url" id="album-capa-url" name="capa_url" placeholder="https://exemplo.com/capa.jpg">
+                        </div>
+
+                        <div id="capa-file-group" class="form-group hidden">
+                            <label for="album-capa-file">Arquivo de Imagem (JPG, PNG, WebP — Max 5MB)</label>
+                            <input type="file" id="album-capa-file" name="capa_file" accept="image/jpeg,image/png,image/webp">
+                        </div>
+
+                        <div id="image-preview-container" class="image-preview-box">
+                            <span class="preview-label">Prévia da Capa:</span>
+                            <img id="image-preview" src="assets/images/placeholder-album.svg" alt="Prévia da capa">
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary" id="album-submit-btn">Salvar Álbum</button>
+                            <button type="button" id="album-cancel-btn" class="btn btn-secondary hidden">Cancelar Edição</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="admin-table-container">
+                    <h2>Álbuns no Acervo</h2>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Capa</th>
+                                <th>Título</th>
+                                <th>Artista</th>
+                                <th>Ano</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-albuns-body">
+                            <tr><td colspan="5">Carregando registros...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABA 2: ARTISTAS -->
+        <section id="tab-artistas" class="tab-content">
+            <div class="admin-grid">
+                <div class="admin-form-container">
+                    <h2>Cadastrar Novo Artista</h2>
+                    <form id="artista-form" class="admin-form">
+                        <div class="form-group">
+                            <label for="artista-nome">Nome do Artista / Banda *</label>
+                            <input type="text" id="artista-nome" name="nome" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="artista-pais">País de Origem</label>
+                            <input type="text" id="artista-pais" name="pais_origem">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="artista-bio">Biografia / Histórico</label>
+                            <textarea id="artista-bio" name="biografia" rows="4"></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Salvar Artista</button>
+                    </form>
+                </div>
+
+                <div class="admin-table-container">
+                    <h2>Artistas Cadastrados</h2>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>País</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-artistas-body">
+                            <tr><td colspan="3">Carregando artistas...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABA 3: MÚSICAS -->
+        <section id="tab-musicas" class="tab-content">
+            <div class="admin-grid">
+                <div class="admin-form-container">
+                    <h2>Vincular Faixa a Álbum</h2>
+                    <form id="musica-form" class="admin-form">
+                        <div class="form-group">
+                            <label for="musica-album-select">Álbum *</label>
+                            <select id="musica-album-select" name="album_id" required>
+                                <option value="">Selecione um álbum...</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="musica-titulo">Título da Música *</label>
+                            <input type="text" id="musica-titulo" name="titulo" required>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="musica-lado">Lado do Vinil (A/B)</label>
+                                <input type="text" id="musica-lado" name="lado_vinil" placeholder="A" value="A">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="musica-faixa">Nº da Faixa</label>
+                                <input type="number" id="musica-faixa" name="numero_faixa" value="1" min="1">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="musica-duracao">Duração (segundos)</label>
+                                <input type="number" id="musica-duracao" name="duracao_segundos" placeholder="Ex: 180 (3 min)">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Adicionar Música</button>
+                    </form>
+                </div>
+
+                <div class="admin-table-container">
+                    <h2>Faixas do Álbum Selecionado</h2>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Lado/Faixa</th>
+                                <th>Título</th>
+                                <th>Duração</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-musicas-body">
+                            <tr><td colspan="4">Selecione um álbum acima para ver as faixas.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-content">
+            <div class="footer-brand">
+                <img src="assets/images/logo.svg" alt="Vinyl Archive" width="140" class="footer-logo">
+                <p>Preservação e documentação da história fonográfica em vinil.</p>
+            </div>
+            <div class="footer-links">
+                <p>Vinyl Archive &copy; 2026 — Projeto Acadêmico sem fins comerciais.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/admin.js"></script>
+</body>
+</html>
